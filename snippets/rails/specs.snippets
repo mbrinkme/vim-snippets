@@ -1,0 +1,386 @@
+#################################################
+# shouldamatcher
+#################################################
+snippet itsh
+	it { should ${1:shouldamatcher} }
+snippet itshvp
+	it { should validate_presence_of :${1:attribute} }
+snippet itshvu
+	it { should validate_uniqueness_of :${1:attribute} }
+snippet itshenum
+	it { should define_enum_for(:${1:types}).with([:${2:text_field}]) }
+#################################################
+# rspec controller snippets
+#################################################
+snippet itroutesnew
+	it 'routes get ${1:`Object_name_plural()`}/new to $1#new' do
+	  expect(get: '$1/new').to route_to(controller: '$1', action: 'new')
+	end
+snippet itroutesindex
+	it 'routes get ${1:`Object_name_plural()`}/ to $1#index' do
+	  expect(get: '$1/').to route_to(controller: '$1', action: 'index')
+	end
+snippet itroutesedit
+	it 'routes get ${1:`Object_name_plural()`}/1/edit to $1#edit' do
+	  expect(get: '$1/1/edit').to route_to(controller: '$1', action: 'edit', id: '1')
+	end
+snippet itroutesshow
+	it 'routes get ${1:`Object_name_plural()`}/1 to $1#show' do
+	  expect(get: '$1/1').to route_to(controller: '$1', action: 'show', id: '1')
+	end
+snippet itroutesupdate
+	it 'routes patch ${1:`Object_name_plural()`}/1 to $1#update' do
+	  expect(patch: '$1/1').to route_to(controller: '$1', action: 'update', id: '1')
+	end
+snippet itroutescreate
+	it 'routes post ${1:`Object_name_plural()`} to $1#create' do
+	  expect(post: '$1').to route_to(controller: '$1', action: 'create')
+	end
+snippet itroutesdestroy
+	it 'routes delete ${1:`Object_name_plural()`}/1 to $1#destroy' do
+	  expect(delete: '$1/1').to route_to(controller: '$1', action: 'destroy', id: '1')
+	end
+snippet itshpermitcreate
+	it { should permit(:${1:attributename}).for(:create) }
+snippet itshpermitcreatemany
+	it { should permit(:${1:attributename}, ${2:models}_attributes: [:${3:id}]).for(:create) }
+snippet itshpermitupdate
+	it { should permit(:${1:attributename}).for(:update, params: { id: `Object_name()`.id }) }
+snippet	dd
+	describe 'DELETE #destroy' do
+	  before :each do
+	    @`expand('%:p:t:r:s?s_controller_spec??')`=FactoryGirl.create(:`expand('%:p:t:r:s?s_controller_spec??')`)
+	  end
+
+	  it { should use_before_action(:set_`expand('%:p:t:r:s?s_controller_spec??')`) }
+
+	  it 'deletes the `expand('%:p:t:r:s?s_controller_spec??')` from the database' do
+	    expect{delete :destroy, id: @`expand('%:p:t:r:s?s_controller_spec??')`}.to change(`substitute(expand('%:p:t:r:s?s_controller_spec??'), '\(_\|^\)\(.\)', '\u\2', 'g')`, :count).by(-1)
+	  end
+	  it 'redirects to `expand('%:p:t:r:s?s_controller_spec??')`#index' do
+	    delete :destroy, id: @`expand('%:p:t:r:s?s_controller_spec??')`
+	    expect(response).to redirect_to `expand('%:p:t:r:s?s_controller_spec??')`s_url
+	  end
+	end
+snippet ds
+	describe 'GET #show' do
+	  it 'assigns the requested ${1:`Object_name()`} to @$1' do
+	    $1 = FactoryGirl.create(:$1)
+	    get :show, id: $1
+	    expect(assigns(:$1)).to eq $1
+	  end
+	end
+snippet du
+	describe 'PATCH #update' do
+	  before :each do
+	    @${1:`Object_name()`}=FactoryGirl.create(:$1, ${2:username}: '${3:Meier}', ${4:admin}: ${5:false} )
+	  end
+
+	  it { should permit(:${6:attributename}).for(:update, params: { id: `Object_name()`.id }) }
+
+	  context 'with valid attributes' do
+	    it 'updates the $1 in the database' do
+	      patch :update, id: @$1, $1: FactoryGirl.attributes_for(:$1)
+	      expect(assigns(:$1)).to eq(@$1)
+	    end
+	    it 'changes @$1 attributes' do
+	      patch :update, id: @$1, $1: FactoryGirl.attributes_for(:$1, $2: '${6:Mueller}', $4: ${7:true})
+	      @$1.reload
+	      expect(@$1.$2).to eq('$6')
+	      expect(@$1.$4).to eq($7)
+	    end
+	    it 'redirects to the edit form' do
+	      patch :update, id: @$1, $1: FactoryGirl.attributes_for(:$1)
+	      expect(response).to render_template :edit
+	    end
+	  end
+	  context 'with invalid attributes' do
+	    it "does not update the $1" do
+	      patch :update, id: @$1, $1: FactoryGirl.attributes_for(:$1, $2: nil, $4: $7)
+	      @$1.reload
+	      expect(@$1.$2).to eq('$3')
+	      expect(@$1.$4).not_to eq($7)
+	    end
+	    it 're-render the :edit template' do
+	      patch :update, id: @$1, $1: FactoryGirl.attributes_for(:invalid_$1)
+	      expect(response).to render_template :edit
+	    end
+	  end
+	end
+
+snippet de
+	describe 'GET #edit' do
+	  it 'assigns the requested ${1:`Object_name()`} to @$1' do
+	    $1 = FactoryGirl.create(:$1)
+	    get :edit, id: $1
+	    expect(assigns(:$1)).to eq $1
+	  end
+	end
+snippet di
+	describe 'GET #index' do
+	  it 'populates a array of ${1:`Object_name_plural()`}' do
+	    ${2:`Object_name()`}_1 = FactoryGirl.create(:$2)
+	    $2_2 = FactoryGirl.create(:$2)
+	    $2_3 = FactoryGirl.create(:$2)
+
+	     get :index
+
+	     expect(assigns(:$1)).to match_array [$2_1,$2_2,$2_3]
+	  end
+	end
+snippet dn
+	describe 'GET #new' do
+	  it 'assigns a new ${1:`Object_name()`} to @$1' do
+	    get :new
+	    expect(assigns(:$1)).to be_a_new ${2:`Model_name()`}
+	  end
+	end
+snippet dc
+	describe 'POST #create' do
+	  context 'with valid attributes' do
+	    it 'saves the new ${1:`Object_name()`} in the database' do
+	      expect{
+		post :create, $1: FactoryGirl.attributes_for(:$1)
+	      }.to change(${2:`Model_name()`}, :count).by 1
+	    end
+
+	    it 'redirects to $1s#index' do
+	      post :create, $1: FactoryGirl.attributes_for(:$1)
+	      expect(response).to redirect_to $1s_path
+	    end
+	  end
+	  context 'with invalid attributes' do
+	    it 'does not save the new $1 in the database' do
+	      expect{
+		post :create, $1: FactoryGirl.attributes_for(:invalid_$1)
+	      }.not_to change($2, :count)
+	    end
+	    it 're-renders the :new template' do
+	      post :create, $1: FactoryGirl.attributes_for(:invalid_$1)
+	      expect(response).to render_template :new
+	    end
+	  end
+	end
+#------------------
+#acceptance tests
+#------------------
+snippet ft
+	require 'rails_helper'
+
+	feature '${1}' do
+	  scenario '${2}' do
+	    ${3}
+	  end
+	end
+snippet v
+	visit ${1}
+snippet e
+	expect(${1}).to ${2}
+snippet ee
+	expect(${1:page}).to ${2:have_css} '${3:h1}', text: '${4:Todos}'
+snippet have_c
+	have_css '${1}', text: '${2}'
+snippet h
+	have_${1:content} '${2}'
+snippet c
+	click_on '${1}'
+snippet f
+	fill_in '${1}', with: '${2}'
+snippet letuser
+	let(:${1:user}) { create :${0:user} }
+
+##########################
+#     Rspec snippets     #
+##########################
+snippet it
+	it 'should return ${1:...}' do
+	  ${2}
+	end
+#################################################
+#      FactoryGirl snippets
+#################################################
+snippet fgs
+	sequence(:${1:name}){|i| "${2:`Object_name`}#{i}"}
+#TODO In fgf Model_name() in singular not plural!!
+snippet fgf
+	FactoryGirl.define do
+	  factory :${1:`Model_name()`} do
+	    sequence(:${2:name}){|i| "$1#{i}"}
+	    factory :invalid_$1 do
+	      ${3:name} nil
+	    end
+	  end
+	end
+snippet fgc
+	FactoryGirl.create(:${1})
+snippet fgb
+	FactoryGirl.build(:${1})
+snippet fgcl
+	FactoryGirl.create_list(:${1}, ${2})
+	#New spec snippets
+snippet fspec
+	require 'rails_helper'
+
+	RSpec.feature '${1}', type: :feature do
+	  scenario '${2}' do
+	    ${0}
+	  end
+	end
+	#
+snippet scen
+	scenario '${1}' do
+	  ${0}
+	end
+#################################################
+# Testing Heads
+#################################################
+snippet routespec
+	require 'rails_helper'
+
+	RSpec.describe `substitute(expand('%:p:t:r:s?_routing_spec?Controller?'), '\(_\|^\)\(.\)', '\u\2', 'g')`, type: :routing do
+	  ${0}
+	end
+snippet ospec
+	require 'rails_helper'
+
+	RSpec.describe ${1:`Model_name()`}, type: :operation do
+	  it 'it returns ${3:the default title}' do
+	    $3
+	  end
+	end
+snippet hspec
+	require 'rails_helper'
+
+	RSpec.describe ${1:`Model_name()`}, type: :helper do
+	  describe '#${2:method_name}' do
+	    it 'should returns ${3:the default title}' do
+	      $3
+	    end
+	  end
+	end
+snippet itroutes
+	it 'routes $1 $2 to $3#$4' do
+	  expect(${1:get}: '${2:path}').to route_to(controller: '${3:controller}', action: '${4:action}')
+	end
+#################################################
+# view specs
+#################################################
+snippet vspecnew
+	require 'rails_helper'
+
+	RSpec.describe '${1:`Object_name_plural()`}/${2:`Template_name()`}', type: :view do
+	  it 'should render the template' do
+	    @${3:`Object_name()`}=${4:`Model_name()`}.new
+	  end
+	end
+
+snippet vspecindex
+	require 'rails_helper'
+
+	RSpec.describe '${1:`Object_name_plural()`}/${2:`Template_name()`}', type: :view do
+	  let(:${3:`Object_name()`}1) { FactoryGirl.create(:$3) }
+	  let(:${3:`Object_name()`}2) { FactoryGirl.create(:$3) }
+	  let(:${3:`Object_name()`}3) { FactoryGirl.create(:$3) }
+	  it 'should render the template' do
+	    @$1=[ ${3:`Object_name()`}1, ${3:`Object_name()`}2, ${3:`Object_name()`}3 ]
+	    render ${0}
+	  end
+	end
+snippet vspecshow
+	require 'rails_helper'
+
+	RSpec.describe '${1:`Object_name_plural()`}/${2:`Template_name()`}', type: :view do
+	  it 'should render the template' do
+	    @${3:`Object_name()`}=FactoryGirl.create(:$3)
+	    render ${0}
+	  end
+	end
+snippet vspecedit
+	require 'rails_helper'
+
+	RSpec.describe '${1:`Object_name_plural()`}/${2:`Template_name()`}', type: :view do
+	  it 'should render the template' do
+	    @${3:`Object_name()`}=FactoryGirl.create(:$3)
+	    render ${0}
+	  end
+	end
+snippet vspecold
+	require 'rails_helper'
+
+	RSpec.describe '${1:controllers}/${2:template}', type: :view do
+	  it 'should render the template' do
+	    render ${0}
+	  end
+	end
+	#
+snippet cspec
+	require 'rails_helper'
+
+	RSpec.describe `substitute(expand('%:p:t:r:s?s_controller_spec??'), '\(_\|^\)\(.\)', '\u\2', 'g')`sController, type: :controller do
+
+	  let(:${1:model}) { FactoryGirl.create(:$1) }
+	end
+snippet cspecold
+	require 'rails_helper'
+
+	RSpec.describe ${1:Models}Controller, type: :controller do
+
+	  let(:valid_attributes) {
+	    FactoryGirl.attributes_for(:${2:model})
+	  }
+
+	  let(:invalid_attributes) {
+	    skip("Add a hash of attributes invalid for your model")
+	  }
+
+	  let(:$2) { FactoryGirl.create(:$2) }
+
+	  describe '${3:GET} #${4:action}' do
+	    it '${5:should}' do
+	      ${0}
+	    end
+	  end
+	end
+	#
+snippet itrenders
+	it 'renders the $3 template' do
+	  ${1:get} :${2:action}
+	  expect(response).to render_template('${3:template}')
+	end
+	#
+snippet ithasstatus
+	it 'responds with http status $3' do
+	  ${1:get} :${2:action}
+	  expect(response).to have_http_status(:${3:status})
+	end
+	#
+snippet itredirects
+	it 'redirects to ${1}' do
+	  ${2:get} :${3:action}
+	  expect(response).to redirect_to(${4:target})
+	end
+snippet itassigns
+	it 'assigns the $2 as @$2' do
+	  ${1:get} :${2:action}
+	  expect(assigns(:${1:value})).to eq(${0})
+	end
+	#
+	#################################################
+	# Model Testing
+	#################################################
+snippet mspec
+	require "rails_helper"
+
+	RSpec.describe ${1:`Model_name()`}, type: :model do
+	  it 'should have a valid factory' do
+	    expect(FactoryGirl.build(:${2:`Object_name()`})).to be_valid
+	    expect{
+	      FactoryGirl.create_list(:$2, 10)
+	    }.to change{ $1.count }.by(10)
+	  end
+	  ${3}
+	end
+snippet	context
+	context '${1} ' do
+	  ${2}
+	end

@@ -1,3 +1,11 @@
+snippet nnl
+	nnoremap <leader>${1:map} ${2:to_this}
+snippet f function
+	if !exists('*${1:FunctionName}')
+	  function! $1()
+	    ${2}
+	  endfunction
+	endif
 snippet header standard Vim script file header
 	" File: ${1:`expand('%:t')`}
 	" Author: ${2:`g:snips_author`}
@@ -50,3 +58,9 @@ snippet bun Vundle.vim Plugin definition
 	Plugin '${0}'
 snippet plug Vundle.vim Plugin definition
 	Plugin '${0}'
+snippet "
+	" ============================================================================================="
+	" ${1:text}
+	" ============================================================================================="
+	${0}
+

@@ -49,7 +49,7 @@ snippet cs
 	<%= collection_select <+object+>, <+method+>, <+collection+>, <+value_method+>, <+text_method+><+, <+[options]+>, <+[html_options]+>+> %>
 snippet ct
 	<%= content_tag '${1:DIV}', ${2:content}${0:,options} %>
-snippet ff
+snippet ff form_for
 	<%= form_for @${1:model} do |f| %>
 		${0}
 	<% end %>
@@ -91,6 +91,8 @@ snippet jit
 	<%= javascript_include_tag ${0::all} %>
 snippet jsit
 	<%= javascript_include_tag "${0}" %>
+snippet link_to
+	<%= link_to "${1:link_text}", ${2:new_todo}_path %>
 snippet lim
 	<%= link_to ${1:model}.${2:name}, ${3:$1}_path(${0:$1}) %>
 snippet linp

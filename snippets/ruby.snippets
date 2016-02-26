@@ -1,7 +1,18 @@
+snippet enum
+	enum ${1:type}: [:${2:text_field}]
+snippet do1
+	do | ${1:o} |
+snippet t
+	t('${0}')
+# encoding for Ruby 1.9
 snippet enc
 	# encoding: utf-8
+
+# #!/usr/bin/env ruby
 snippet #!
 	#!/usr/bin/env ruby
+	# encoding: utf-8
+
 # New Block
 snippet =b
 	=begin rdoc
@@ -30,6 +41,8 @@ snippet reqr
 	require_relative '${1}'
 snippet #
 	# =>
+snippet end
+	__END__
 snippet case
 	case ${1:object}
 	when ${2:condition}
@@ -665,7 +678,7 @@ snippet mthrow
 ##########################
 #     Rspec snippets     #
 ##########################
-snippet desc
+snippet desc describe
 	describe ${1:`substitute(substitute(vim_snippets#Filename(), '_spec$', '', ''), '\(_\|^\)\(.\)', '\u\2', 'g')`} do
 		${0}
 	end
@@ -723,3 +736,209 @@ snippet iiexp
 	it { is_expected.to ${0} }
 snippet iiexpn
 	it { is_expected.not_to ${0} }
+
+#################################################
+# controller methods
+#################################################
+snippet classc
+	class ${1:`Model_name()`}sController < ApplicationController
+	  ${0}
+	end
+snippet bas
+	before_action :${1:set_`Object_name()`}, only: [:${2:update}]
+snippet set
+	def set_${1:`Object_name()`}
+	  @$1 = ${2:`Model_name()`}.find(params[:id])
+	end
+snippet update
+	def update
+	  if @${1:`Object_name()`}.update($1_params)
+	    set_flash @$1, 'update'
+	    redirect_to ${2:edit_`Object_name()`_path}($1)
+	  else
+	    set_flash @$1, 'update_failed'
+	    render ${3::edit}
+	  end
+	end
+snippet create
+	def create
+	  @${1:`Object_name()`} = ${2:`Model_name()`}.new($1_params)
+
+	  if @$1.save
+	    redirect_to ${3:`Object_name_plural()`}_path, notice: t('.$1_successfully_created')
+	  else
+	    set_flash @$1, 'create_failed'
+	    render ${4::new}
+	  end
+	end
+snippet edit
+	def edit
+	end
+snippet new
+	def new
+	  @${1:`Object_name()`} = ${2:`Model_name()`}.new
+	end
+snippet index
+	def index
+	  @${1:`Object_name_plural()`} = ${2:`Model_name()`}.all
+	end
+snippet set_flash
+	def set_flash(flash_type, message_text)
+	  flash[flash_type] = t("helpers.notices.#{message_text}", model: ${1:`Model_name()`}.model_name.human) + @${2:`Object_name()`}.errors.full_messages.to_sentence
+	end
+snippet params
+	def ${1:`Object_name()`}_params
+	  params.require(:$1).permit(:${2:model_attribute})
+	end
+#snippet ba
+#before_action :${1:authenticate}
+snippet bao
+	before_action :${1:authenticate}, only: [ :${1:index}${2} ]
+snippet p=
+	p "================================================="
+snippet p
+	p "================================================="
+	p "================================================="
+	p ${1}
+	p "================================================="
+	p "================================================="
+snippet respondser
+	respond_to do |format|
+	  format.html { render :${1:index}  }
+	  format.json { render json: ActiveModel::ArraySerializer.new(@${2:models}, each_serializer: ${3:Model}Serializer)  }
+	end
+	${0}
+snippet respond_to
+	respond_to do |format|
+	  format.html { render :${1:index}  }
+	end
+	${0}
+#################################################
+# angularjs
+#################################################
+snippet classser
+	class ${1:model}Serializer < ActiveModel::Serializer
+	  attributes :${2:model_attribute}
+	end
+
+#------------------
+# rspec
+#------------------
+snippet ctex
+	require 'rails_helper'
+
+	RSpec.describe `expand('%:t:r:gs?\(_spec\)\|\(_\)\(\l\)\|\(^[a-z]\)?\u\3\u\4?')`, type: :controller do
+	  describe '${1:"GET index"}' do
+	    ${2:let!(:completed_todo) { FactoryGirl.create(done: true, note: "buy milk") }}
+
+	    it 'renders the :index template' do
+	      get :index
+	      expect(response).to render_template :index
+	    end
+
+	    it '${3:returns only the completed todos}' do
+	      ${4:get(:index)}
+	      ${5:except(assigns(:completed_todos)).to eq([completed_todo])}
+	    end
+	  end
+	end
+snippet ct
+	require 'rails_helper'
+
+	RSpec.describe `expand('%:t:r:gs?\(_spec\)\|\(_\)\(\l\)\|\(^[a-z]\)?\u\3\u\4?')`, type: :controller do
+	  describe '${1:"GET index"}' do
+	    ${2}
+	    it '${3:returns only the completed todos}' do
+	      ${4:get(:index)}
+	      ${5:except(assigns(:completed_todos)).to eq([completed_todo])}
+	    end
+	  end
+	end
+snippet mt
+	require 'rails_helper'
+
+	RSpec.describe `expand('%:t:r:gs?\(_spec\)\|\(_\)\(\l\)\|\(^[a-z]\)?\u\3\u\4?')`, type: :model do
+	  ${1}
+	end
+snippet desc
+	describe '${1}' do
+	  ${2}
+	end
+
+#------------------
+# routes
+#------------------
+snippet root
+	root to: '${1:models}#index'
+snippet resources
+	resources :${1:models}, only: :${2:crud_action}
+snippet res
+	resources :${1:models}, only: [:${2:crud_action}]
+snippet resource
+	resource :${1:session}, only: [:${2:crud_action}]
+
+#################################################
+# gemfile
+#################################################
+snippet gem
+	gem '${1:mygem}'
+snippet geme
+	gem '${1:mygem}', '~> ${2:version}'
+snippet group
+	group :${1:test} do
+	  gem${0}
+	end
+snippet gemdeploy
+	gem 'unicorn'
+	gem 'dotenv'
+
+	group :development do
+	  gem 'knife-solo', '~> 0.4.2'
+	  gem 'capistrano', '~> 3.2.1'
+	  gem 'capistrano-rails', '~> 1.1.1'
+	  gem 'capistrano-bundler', '~> 1.1.2'
+	  gem 'capistrano-rbenv', '~> 2.0.2'
+	end
+snippet gemheroku
+	gem 'dotenv'
+
+	group :production do
+	  gem 'rails_12factor'
+	end
+snippet gemirbtools
+	gem 'irbtools', require: 'irbtools/binding'
+snippet gemrefile
+	gem "refile", require: ["refile/rails","refile/image_processing"]
+#################################################
+# pundit
+#################################################
+snippet afterauth
+	after_action :verify_authorized
+snippet auth
+	authorize @${1:model}
+#################################################
+# model
+#################################################
+snippet	classm
+	class ${1:`Model_name()`} < ActiveRecord::Base
+	  ${0}
+	end
+#################################################
+# devise
+#################################################
+snippet a
+	before_action :authenticate_user!
+#################################################
+# FactoryGirl
+#################################################
+snippet fklorem
+	{ ${1:Faker::Lorem.sentence } }
+snippet fac
+	FactoryGirl.define do
+	  factory :${1:model} do
+	    ${2:model_attribute1} { ${3:Faker::Lorem.sentence } }
+	  end
+	end
+#################################################
+# heroku
+#################################################

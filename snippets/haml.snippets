@@ -1,4 +1,8 @@
+snippet do1
+	do | ${1:o} |
 snippet t
+	t('${0}')
+snippet table
 	%table
 		%tr
 			%th
@@ -35,3 +39,32 @@ snippet ifp
 		${0}
 snippet ntc
 	= number_to_currency(${1})
+#################################################
+# angularJS
+#################################################
+snippet ng
+	{ ng_${1:controller}: '${2:action}'}
+snippet ngc
+	{ ng_${1:controller}: '${2:Models}Ctrl'}
+snippet ngm
+	{ ng_${1:model}: '${2:model}.${3:attribut}'}
+snippet ngr
+	{ ng_repeat: '${1:model} in ${2:models}' }
+snippet ngclick
+	%a{ ng_click: '${1:toggleCustom()}' } ${2:link_text}
+snippet ngs
+	{ ng_show: '${1:true}' }
+
+#################################################
+# form builder
+#################################################
+snippet ff
+	= form_for(@${1:model}) do |f|
+snippet ffl
+	= f.label :${1:model_attribute}
+snippet fftf
+	= f.label :${1:model_attribute}
+	= f.text_field :$1
+snippet ffcb
+	= f.label :${1:model_attribute}
+	= f.check_box :$1

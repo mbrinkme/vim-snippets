@@ -50,8 +50,8 @@ snippet eq equation environment
 # Equation
 snippet eql Labeled equation environment
 	\begin{equation}
-		\label{eq:${2}}
-	${0}
+	\label{eq:${2}}
+		${0}
 	\end{equation}
 # Equation
 snippet eq* unnumbered equation environment
@@ -205,9 +205,9 @@ snippet fcite \footcite[]{}
 snippet it italic text
 	\textit{${0:text}}
 snippet bf bold face text
-	\textbf{${0:text}}
-snippet under underline text
-	\underline{${0:text}}
+	\textbf{${1:text}}${0}
+snippet ul under underline text
+	\underline{${1:text}} ${0}
 snippet emp emphasize text
 	\emph{${0:text}}
 snippet sc small caps text
@@ -288,15 +288,15 @@ snippet \{ \{ \}
 #delimiter
 snippet lr left right
 	\left${1} ${0} \right$1
-snippet lr( left( right) 
+snippet lr( left( right)
 	\left( ${0} \right)
-snippet lr| left| right| 
+snippet lr| left| right|
 	\left| ${0} \right|
-snippet lr{ left\{ right\} 
+snippet lr{ left\{ right\}
 	\left\\{ ${0} \right\\}
-snippet lr[ left[ right] 
+snippet lr[ left[ right]
 	\left[ ${0} \right]
-snippet lra langle rangle 
+snippet lra langle rangle
 	\langle ${0} \rangle
 # Code listings
 snippet lst
@@ -315,3 +315,8 @@ snippet urlc
 	\url{`@+`} ${0}
 snippet hrefc
 	\href{`@+`}{${1}} ${0}
+#arrows
+snippet	ra
+	$\rightarrow$${1}
+snippet vp4
+	\vspace{0.4cm}

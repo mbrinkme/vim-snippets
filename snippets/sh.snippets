@@ -92,3 +92,10 @@ snippet fun
 	function ${1:function_name}() {
 		${0:#function_body}
 	}
+snippet usage
+	if [ ! -z $1 ]; then
+	  ${1}
+	else
+	  echo "ERROR! You need one Parameter."
+	  echo "usage: y.sh url human_filname [Parameter for youtube-dl i.g. -o]"
+        fi
