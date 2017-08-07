@@ -704,6 +704,8 @@ snippet let!
 	let!(:${1:object}) { ${0} }
 snippet subj
 	subject { ${0} }
+snippet su
+	subject(${1}) { ${0} }
 snippet s.
 	subject.${0:method}
 snippet spec
@@ -718,12 +720,15 @@ snippet shared
 	shared_examples ${0:'shared examples name'}
 snippet ibl
 	it_behaves_like ${0:'shared examples name'}
-snippet it
 	it '${1:spec_name}' do
 		${0}
 	end
 snippet its
 	its(:${1:method}) { should ${0} }
+snippet it
+	it '${1}' do
+	  ${0}
+	end
 snippet is
 	it { should ${0} }
 snippet isn
@@ -740,7 +745,7 @@ snippet iiexpn
 #################################################
 # controller methods
 #################################################
-snippet classc
+snippet cclass
 	class ${1:`Model_name()`}sController < ApplicationController
 	  ${0}
 	end
@@ -919,7 +924,19 @@ snippet auth
 #################################################
 # model
 #################################################
-snippet	classm
+snippet	oclass
+	class ${1:`Model_name()`}
+	  include Callable
+
+	  def initialize(${2:model})
+	    @$2 = $2
+	  end
+
+	  def call
+	  ${0}
+	  end
+	end
+snippet	mclass
 	class ${1:`Model_name()`} < ActiveRecord::Base
 	  ${0}
 	end

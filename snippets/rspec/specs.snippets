@@ -10,8 +10,12 @@ snippet itshvu
 snippet itshenum
 	it { should define_enum_for(:${1:types}).with([:${2:text_field}]) }
 #################################################
-# rspec controller snippets
+# Routing specs
 #################################################
+snippet itroutes
+	it 'routes $1 $2 to $3#$4' do
+	  expect(${1:get}: '${2:path}').to route_to(controller: '${3:controller}', action: '${4:action}')
+	end
 snippet itroutesnew
 	it 'routes get ${1:`Object_name_plural()`}/new to $1#new' do
 	  expect(get: '$1/new').to route_to(controller: '$1', action: 'new')
@@ -40,6 +44,10 @@ snippet itroutesdestroy
 	it 'routes delete ${1:`Object_name_plural()`}/1 to $1#destroy' do
 	  expect(delete: '$1/1').to route_to(controller: '$1', action: 'destroy', id: '1')
 	end
+
+#################################################
+# rspec controller snippets
+#################################################
 snippet itshpermitcreate
 	it { should permit(:${1:attributename}).for(:create) }
 snippet itshpermitcreatemany
@@ -161,6 +169,32 @@ snippet dc
 	    end
 	  end
 	end
+snippet itrenders
+	it 'renders the $3 template' do
+	  ${1:get} :${2:action}
+	  expect(response).to render_template('${3:template}')
+	end
+	#
+snippet ithasstatus
+	it 'responds with http status $3' do
+	  ${1:get} :${2:action}
+	  expect(response).to have_http_status(:${3:status})
+	end
+	#
+snippet itredirects
+	it 'redirects to ${1}' do
+	  ${2:get} :${3:action}
+	  expect(response).to redirect_to(${4:target})
+	end
+snippet itassigns
+	it 'assigns the $2 as @$2' do
+	  ${1:get} :${2:action}
+	  expect(assigns(:${1:value})).to eq(${0})
+	end
+	#
+	#################################################
+	# Model Testing
+	#################################################
 #------------------
 #acceptance tests
 #------------------
@@ -193,7 +227,7 @@ snippet letuser
 #     Rspec snippets     #
 ##########################
 snippet it
-	it 'should return ${1:...}' do
+	it 'should ${1:...}' do
 	  ${2}
 	end
 #################################################
@@ -240,13 +274,15 @@ snippet routespec
 	RSpec.describe `substitute(expand('%:p:t:r:s?_routing_spec?Controller?'), '\(_\|^\)\(.\)', '\u\2', 'g')`, type: :routing do
 	  ${0}
 	end
+snippet sspec
+	require 'rails_helper'
+
+	RSpec.describe ${1:`Model_name()`}, type: :service do
+	end
 snippet ospec
 	require 'rails_helper'
 
 	RSpec.describe ${1:`Model_name()`}, type: :operation do
-	  it 'it returns ${3:the default title}' do
-	    $3
-	  end
 	end
 snippet hspec
 	require 'rails_helper'
@@ -258,10 +294,47 @@ snippet hspec
 	    end
 	  end
 	end
-snippet itroutes
-	it 'routes $1 $2 to $3#$4' do
-	  expect(${1:get}: '${2:path}').to route_to(controller: '${3:controller}', action: '${4:action}')
+snippet mspec
+	require "rails_helper"
+
+	RSpec.describe ${1:`Model_name()`}, type: :model do
+	  it 'should have a valid factory' do
+	    expect(FactoryGirl.build(:${2:`Object_name()`})).to be_valid
+	    expect{
+	      FactoryGirl.create_list(:$2, 10)
+	    }.to change{ $1.count }.by(10)
+	  end
+	  ${3}
 	end
+snippet cspec
+	require 'rails_helper'
+
+	RSpec.describe `substitute(expand('%:p:t:r:s?s_controller_spec??'), '\(_\|^\)\(.\)', '\u\2', 'g')`sController, type: :controller do
+
+	  let(:${1:model}) { FactoryGirl.create(:$1) }
+	end
+snippet cspecold
+	require 'rails_helper'
+
+	RSpec.describe ${1:Models}Controller, type: :controller do
+
+	  let(:valid_attributes) {
+	    FactoryGirl.attributes_for(:${2:model})
+	  }
+
+	  let(:invalid_attributes) {
+	    skip("Add a hash of attributes invalid for your model")
+	  }
+
+	  let(:$2) { FactoryGirl.create(:$2) }
+
+	  describe '${3:GET} #${4:action}' do
+	    it '${5:should}' do
+	      ${0}
+	    end
+	  end
+	end
+	#
 #################################################
 # view specs
 #################################################
@@ -313,74 +386,11 @@ snippet vspecold
 	  end
 	end
 	#
-snippet cspec
-	require 'rails_helper'
-
-	RSpec.describe `substitute(expand('%:p:t:r:s?s_controller_spec??'), '\(_\|^\)\(.\)', '\u\2', 'g')`sController, type: :controller do
-
-	  let(:${1:model}) { FactoryGirl.create(:$1) }
+snippet	desc
+	describe '${1}' do
+	  ${2}
 	end
-snippet cspecold
-	require 'rails_helper'
-
-	RSpec.describe ${1:Models}Controller, type: :controller do
-
-	  let(:valid_attributes) {
-	    FactoryGirl.attributes_for(:${2:model})
-	  }
-
-	  let(:invalid_attributes) {
-	    skip("Add a hash of attributes invalid for your model")
-	  }
-
-	  let(:$2) { FactoryGirl.create(:$2) }
-
-	  describe '${3:GET} #${4:action}' do
-	    it '${5:should}' do
-	      ${0}
-	    end
-	  end
-	end
-	#
-snippet itrenders
-	it 'renders the $3 template' do
-	  ${1:get} :${2:action}
-	  expect(response).to render_template('${3:template}')
-	end
-	#
-snippet ithasstatus
-	it 'responds with http status $3' do
-	  ${1:get} :${2:action}
-	  expect(response).to have_http_status(:${3:status})
-	end
-	#
-snippet itredirects
-	it 'redirects to ${1}' do
-	  ${2:get} :${3:action}
-	  expect(response).to redirect_to(${4:target})
-	end
-snippet itassigns
-	it 'assigns the $2 as @$2' do
-	  ${1:get} :${2:action}
-	  expect(assigns(:${1:value})).to eq(${0})
-	end
-	#
-	#################################################
-	# Model Testing
-	#################################################
-snippet mspec
-	require "rails_helper"
-
-	RSpec.describe ${1:`Model_name()`}, type: :model do
-	  it 'should have a valid factory' do
-	    expect(FactoryGirl.build(:${2:`Object_name()`})).to be_valid
-	    expect{
-	      FactoryGirl.create_list(:$2, 10)
-	    }.to change{ $1.count }.by(10)
-	  end
-	  ${3}
-	end
-snippet	context
-	context '${1} ' do
+snippet	con
+	context '${1}' do
 	  ${2}
 	end
