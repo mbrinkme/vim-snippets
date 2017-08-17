@@ -1,16 +1,56 @@
 snippet seq
 	sequence(:${1:productgroup }) {|i| "${2:$1}#{i}"}
+snippet oclass
+	class ${1:`Model_name()`}
+	  include Callable
 
-snippet ccontroller
-	class ${1:`Model_name()`}Controller < ApplicationController
+	  def initialize(${2:})
+	    @$2 = $2
+	  end
+
+	  def call
+	    ${0}
+	  end
+	end
+snippet cclass
+	class ${1:`Model_name()`}sController < ApplicationController
 	  $0
 	end
-#
-snippet cmodel
+snippet sclass
+	class ${1:`Model_name()`}
+	  include Sidekiq::Worker
+
+	  sidekiq_options queue: :${2:`Queue_name()`}
+
+	  def perform(${3:arg})
+	    ${4:}
+	  end
+	end
+snippet mclass
 	class ${1:Model} < ActiveRecord::Base
 	  $0
 	end
-#
+snippet vclass
+snippet mvclass
+	class Multiple${1:Domain}Validator < ActiveModel::EachValidator
+	  def validate_each(record, attribute, ${2:domain}s)
+	    if $2s.present?
+	      unless $2s_valid?($2s)
+		record.errors[attribute] << (options[:message] || I18n.t('helpers.message.is_not_correct'))
+	      end
+	    end
+	  end
+
+	  private
+
+	  def $2s_valid?($2s)
+	    $2s.each do | $2 |
+	      unless $1Validator.valid?($2)
+		return false
+	      end
+	    end
+	  end
+	end
 ###############
 # Redirection #
 ###############
@@ -116,7 +156,7 @@ snippet amc
 snippet flash
 	flash[:${1:notice}] = '${0}'
 snippet habtm
-	has_and_belongs_to_many :${1:object}, join_table: '${2:table_name}', foreign_key: '${3}_id'
+	has_and_belongs_to_many :${1:object}
 snippet hm
 	has_many :${0:object}
 snippet hmd
@@ -226,7 +266,7 @@ snippet rn
 	render nothing: ${0:true}
 snippet rns
 	render nothing: ${1:true}, status: ${0:401}
-snippet sc scope
+snippet sc
 	scope :${1:name}, -> { where(${2:field}: ${0:value}) }
 snippet sl
 	scope :${1:name}, lambda do |${2:value}|
@@ -260,16 +300,6 @@ snippet ass assert_select(..)
 	assert_select '${1:path}', ${2:text}: '${3:inner_html}' ${4:do}
 		${0}
 	end
-snippet ba
-	before_action :${0:method}
-snippet bf
-	before_filter :${0:method}
-snippet bt
-	belongs_to :${0:association}
-snippet btp
-	belongs_to :${1:association}, polymorphic: true
-snippet crw
-	cattr_accessor :${0:attr_names}
 snippet defcreate
 	def create
 		@${1:model_class_name} = ${2:ModelClassName}.new($1_params)
@@ -561,30 +591,54 @@ snippet test
 ###########################
 #   migrations snippets   #
 ###########################
+snippet mccd
+	change_column_default :${1:table_name_in_plural}, ${2:attribute}, ${3:default_value}
+snippet mref
+	add_reference :${1:table_name_in_plural}, :${2:attribute_foreign_key_e_g_user}, index: true, foreign_key: true
+snippet	mdt
+	drop_table :${1:table_name_in_plural}
+snippet mhabtm
+	def change
+	  create_table :${1:table_name_1_in_plural}_${2:table_name_2_in_plural}, id: false do |t|
+	    t.integer :${3:foreign_key_id1}
+	    t.integer :${4:foreign_key_id1}
+	  end
+	  add_index :$1, $3
+	  add_index :$2, $4
+	end
+snippet mrt
+	rename_table :${1:old_table_name_in_plural}, :${2:old_table_name_in_plural}
 snippet mac
 	add_column :${1:table_name_plural}, :${2:column_name}, :${0:data_type}
+snippet mdi
+	remove_index :${1:table_name_plural}, :${0:column_name}
 snippet mai
 	add_index :${1:table_name_plural}, :${0:column_name}
+snippet mri
+	remove_index :${1:table_name_plural}, :${0:column_name}
+snippet dddlt
+	disable_ddl_transaction!
+snippet maiac
+	add_index :${1:table_name_plural}, :${0:column_name}, algorithm: :concurrently
+snippet maiub
+	add_index :${1:table_name_plural}, :${0:column_name}, using: :btree
+snippet maiug
+	add_index :${1:table_name_plural}, :${0:column_name}, using: :gin
 snippet mrc
 	remove_column :${1:table_name_plural}, :${0:column_name}
 snippet mrnc
 	rename_column :${1:table_name_plural}, :${2:old_column_name}, :${0:new_column_name}
+snippet mrnt
+	rename_table :${1:old_table_name_plural}, :${2:new_table_name_plural}
 snippet mcc
 	change_column :${1:table_plural}, :${2:column}, :${0:type}
+snippet mccu
+	change_column :${1:table_plural}, :${2:column}, "${3:integer} USING CAST($2 AS $3)"
 snippet mnc
 	t.${1:string} :${2:title}${3:, null: false}
 snippet mct
 	create_table :${1:table_name_plural} do |t|
-		${0}
-	end
-snippet migration class .. < ActiveRecord::Migration .. def up .. def down .. end
-	class ${1:class_name} < ActiveRecord::Migration
-		def up
-			${0}
-		end
-
-		def down
-		end
+	  ${0}
 	end
 snippet migration class .. < ActiveRecord::Migration .. def change .. end
 	class ${1:class_name} < ActiveRecord::Migration

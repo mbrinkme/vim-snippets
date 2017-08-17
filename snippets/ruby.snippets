@@ -32,9 +32,15 @@ snippet rb
 	#!/usr/bin/env ruby -wKU
 snippet beg
 	begin
-		${0}
-	rescue ${1:Exception} => ${2:e}
+	  ${0}
+	rescue ${1:StandardError} => ${2:error}
+	  require 'pp'
+	  pp error
+	  pp error.message
+	  pp error.backtrace
+	  byebug
 	end
+#Rails.logger.${3:fatal} "#{error}"
 snippet req require
 	require '${1}'
 snippet reqr
@@ -351,6 +357,8 @@ snippet redd
 		${0}
 	end
 snippet map
+	map do |${1}|
+snippet maps
 	map { |${1:e}| ${0} }
 snippet mapd
 	map do |${1:e}|
@@ -678,7 +686,7 @@ snippet mthrow
 ##########################
 #     Rspec snippets     #
 ##########################
-snippet desc describe
+snippet desc
 	describe ${1:`substitute(substitute(vim_snippets#Filename(), '_spec$', '', ''), '\(_\|^\)\(.\)', '\u\2', 'g')`} do
 		${0}
 	end
@@ -763,6 +771,14 @@ snippet update
 	  else
 	    set_flash @$1, 'update_failed'
 	    render ${3::edit}
+	  end
+	end
+snippet destroy
+	def destroy
+	  if @${1:`Object_name()`}.destroy
+	    redirect_to ${1:`Object_name()`}s_path, notice: t('.${1:`Object_name()`}_successfully_destroyed')
+	  else
+	    redirect_to ${1:`Object_name()`}s_path, notice: t('.${1:`Object_name()`}_destroy_failed')
 	  end
 	end
 snippet create

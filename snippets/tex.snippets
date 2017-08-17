@@ -1,4 +1,103 @@
+snippet fig figure environment (includegraphics)
+	\begin{figure}[${1:H}]
+	  \centering
+	  \includegraphics[width=\textwidth]{bilder/${2:filename}}
+	  \caption{${3}}
+	  \label{fig:${4}}
+	\end{figure}
+	${0}
+snippet sq
+	\textquotesingle ${0}\textquotesingle
+#Choosing font
+snippet sf sans serife text
+	\textsf{${0:text}}
+snippet rm roman font text
+	\textrm{${0:text}}
+snippet	tt
+	\texttt{${1}}${0}
+snippet ng
+	\newglossaryentry{${1:lagerumschlagshaeufigkeit}}
+	{%
+		name=${2:Lagerumschlagshäufigkeit},
+		description={${3:ist eine Kennzahl der Materialwirtschaft}},
+		plural=${4:Lagerumschlagshäufigkeiten}
+	}
+snippet na
+	\newacronym{${1:kuerzel}}{${2:angezeigteskuerzel}}{${3:beschreibung}}
+snippet nh
+	Nice-to-Have
+snippet mh
+	Must-Have
+snippet mb
+	Marco Brinkmeier
+snippet mp
+	Mark Pradzinski
+snippet nn
+	nicht notwendig
+snippet thb
+	theoretisch bearbeitet
+snippet eb
+	erfolgreich bearbeitet
+snippet	tb
+	\begin{table}[H]
+	  \begin{tabular}{|l|p{11cm}|}
+	    \hline
+	    Anforderung & ${1:anforderung}\\\
+	    \hline
+	    Details & ${2:details}\\\
+	    \hline
+	    Priorität & ${3:prio}\\\
+	    \hline
+	    Status & ${4:status}\\\
+	    \hline
+	    Bearbeitet von & ${5:name} \\\
+	    \hline
+	  \end{tabular}
+	\caption{Anforderung: ${6}}
+	\label{tab:${7}}
+	\end{table}
+# Label
+snippet lab \label
+	\label{${1}}
+snippet labch
+	\label{ch:${1}}
+snippet labsec
+	\label{sec:${1}}
+snippet labsub
+	\label{subsec:${1}}
+snippet labsubsub
+	\label{subsubsec:${1}}
+snippet np
+	\newpage
+snippet lst
+	\lstinputlisting[mathescape=true, caption=${1:caption}, label=lst:${2:label}]{listings/${3:filename}}
+snippet glspl
+	\glspl{${1:abbr}}$0
+snippet gls
+	\gls{${1:abbr}}$0
+snippet incl
+	\include{${1}}
 #PREAMBLE
+snippet af
+	\acrfull{${1:}}
+snippet frc
+	\fullref{ch:${1:}}
+snippet frs
+	\fullref{sec:${1:}}
+snippet frsss
+	\fullref{subsubsec:${1:}}
+snippet frss
+	\fullref{subsec:${1:}}
+snippet frf
+	\fullref{fig:${1:}}
+snippet frt
+	\fullref{tab:${1:}}
+snippet frl
+	\fullref{lst:${1:}}
+snippet fr
+	\fullref{${1:}}
+snippet cr
+	\cref{${1:ref_name}}
 #newcommand
 snippet nc \newcommand
 	\newcommand{\\${1:cmd}}[${2:opt}]{${3:realcmd}} ${0}
@@ -68,9 +167,6 @@ snippet eqnarray eqnarray environment
 	\begin{eqnarray}
 		${0}
 	\end{eqnarray}
-# Label
-snippet lab \label
-	\label{${1:eq:}${2:fig:}${3:tab:}${0}}
 # Enumerate
 snippet enum enumerate environment
 	\begin{enumerate}
@@ -123,39 +219,36 @@ snippet part document \part
 	${0}
 	% part $2 (end)
 # Chapter
+snippet cam
+	\chapterauthor{Marco Brinkmeier}
+snippet camm
+	\chapterauthor{Marco Brinkmeier, Mark Pradzinski}
 snippet cha \chapter
-	\chapter{${1:chapter name}}
-	\label{cha:${2:$1}}
+	\chapter{${1:chaptername}}\label{ch:${2:$1}}
 	${0}
 # Section
 snippet sec \section
-	\section{${1:section name}}
-	\label{sec:${2:$1}}
+	\section{${1:sectionname}}\label{sec:${2:$1}}
 	${0}
 # Section without number
 snippet sec* \section*
-	\section*{${1:section name}}
-	\label{sec:${2:$1}}
+	\section*{${1:sectionname}}\label{sec:${2:$1}}
 	${0}
 # Sub Section
 snippet sub \subsection
-	\subsection{${1:subsection name}}
-	\label{sub:${2:$1}}
+	\subsection{${1:subsectionname}}\label{subsec:${2:labelname}}
 	${0}
 # Sub Section without number
 snippet sub* \subsection*
-	\subsection*{${1:subsection name}}
-	\label{sub:${2:$1}}
+	\subsection*{${1:subsectionname}}\label{subsec:${2:$1}}
 	${0}
-# Sub Sub Section
-snippet subs \subsubsection
-	\subsubsection{${1:subsubsection name}}
-	\label{ssub:${2:$1}}
+# SubSub Section
+snippet subs
+	\subsubsection{${1:subsubsection}}\label{subsubsec:${2:$1}}
 	${0}
-# Sub Sub Section without number
-snippet subs* \subsubsection*
-	\subsubsection*{${1:subsubsection name}}
-	\label{ssub:${2:$1}}
+# Sub Section without number
+snippet subs* \subsection*
+	\subsubsection*{${1:subsubsection}}\label{subsubsec:${2:$1}}
 	${0}
 # Paragraph
 snippet par \paragraph
@@ -199,26 +292,19 @@ snippet citea \citeauthor
 	\citeauthor{${1}} ${0}
 snippet citey \citeyear
 	\citeyear{${1}} ${0}
-snippet fcite \footcite[]{}
+snippet fc fcite \footcite[]{}
 	\footcite[${1}]{${2}}${0}
 #Formating text: italic, bold, underline, small capital, emphase ..
 snippet it italic text
 	\textit{${0:text}}
 snippet bf bold face text
-	\textbf{${1:text}}${0}
+	\textbf{${1}}${0}
 snippet ul under underline text
 	\underline{${1:text}} ${0}
 snippet emp emphasize text
 	\emph{${0:text}}
 snippet sc small caps text
 	\textsc{${0:text}}
-#Choosing font
-snippet sf sans serife text
-	\textsf{${0:text}}
-snippet rm roman font text
-	\textrm{${0:text}}
-snippet tt typewriter (monospace) text
-	\texttt{${0:text}}
 #Math font
 snippet mf mathfrak
 	\mathfrak{${0:text}}
@@ -229,15 +315,6 @@ snippet ms mathscr
 #misc
 snippet ft \footnote
 	\footnote{${0:text}}
-snippet fig figure environment (includegraphics)
-	\begin{figure}
-	\begin{center}
-		\includegraphics[scale=${1}]{Figures/${2}}
-	\end{center}
-	\caption{${3}}
-	\label{fig:${4}}
-	\end{figure}
-	${0}
 snippet tikz figure environment (tikzpicture)
 	\begin{figure}
 	\begin{center}
@@ -298,16 +375,13 @@ snippet lr[ left[ right]
 	\left[ ${0} \right]
 snippet lra langle rangle
 	\langle ${0} \rangle
-# Code listings
-snippet lst
-	\begin{listing}[language=${1:language}]
-		${0}
-	\end{listing}
 snippet lsi
 	\lstinline|${1}| ${0}
 # Hyperlinks
 snippet url
 	\url{${1}} ${0}
+snippet furl
+	\furl{${1}}{${2}} ${0}
 snippet href
 	\href{${1}}{${2}} ${0}
 # URL from Clipboard.

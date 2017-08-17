@@ -1,6 +1,40 @@
+snippet sufgb
+	subject { FactoryGirl.build(:${1}) }
+snippet su
+	subject { ${1} }
+#################################################
+# rspec mock
+#################################################
+snippet allow
+	allow(${1:subject}).to ${2}
+snippet atrar
+	allow(${1:subject}).to receive(:${2:method}).and_return(${3:false})
+#################################################
+# shared_examples
+#################################################
+snippet sespec
+	require 'rails_helper'
+
+	RSpec.shared_examples "${1:`Model_name()`}" do |${2:parameter}|
+	  ${3}
+	end
+snippet ibl it_behaves_like
+	it_behaves_like '${0:soft_delete}', ${1:`Model_name()`}, ${2::`Object_name()`}${3}
 #################################################
 # shouldamatcher
 #################################################
+snippet itise
+	it { is_expected.not_to ${1:shouldamatcher} }
+snippet itisnotvu
+	it { is_expected.not_to validate_uniqueness_of(${1:attribute})}
+snippet itisnotvp
+	it { is_expected.not_to validate_presence_of(${1:attribute})}
+snippet itisnotoi
+	it { is_expected.not_to validate_numericality_of(${1:attribute}).only_integer }
+snippet itisnotigt
+	it { is_expected.not_to validate_numericality_of(${1:attribute}).is_greater_than(${2:0}) }
+snippet itisnot
+	it { is_expected.not_to ${1:shouldamatcher} }
 snippet itsh
 	it { should ${1:shouldamatcher} }
 snippet itshvp
@@ -9,16 +43,28 @@ snippet itshvu
 	it { should validate_uniqueness_of :${1:attribute} }
 snippet itshenum
 	it { should define_enum_for(:${1:types}).with([:${2:text_field}]) }
+snippet itshserialize itshs
+	it { should serialize(:${1:attribute}) }
+snippet itshbt
+	it { should belong_to :${1:model} }
+snippet itshhm
+	it { should have_many :${1:model} }
+snippet itshhabtm
+	it { should have_and_belong_to_many :${1:model} }
 #################################################
 # Routing specs
 #################################################
+snippet ej
+	expect(response.content_type).to eq "application/json"
+	expect(response).to have_http_status(:ok)
+
 snippet itroutes
 	it 'routes $1 $2 to $3#$4' do
 	  expect(${1:get}: '${2:path}').to route_to(controller: '${3:controller}', action: '${4:action}')
 	end
 snippet itroutesnew
 	it 'routes get ${1:`Object_name_plural()`}/new to $1#new' do
-	  expect(get: '$1/new').to route_to(controller: '$1', action: 'new')
+	  expect(get: '$1/new').to route_to('$1#new')
 	end
 snippet itroutesindex
 	it 'routes get ${1:`Object_name_plural()`}/ to $1#index' do
@@ -210,6 +256,8 @@ snippet v
 	visit ${1}
 snippet e
 	expect(${1}).to ${2}
+snippet eb
+	expect{ ${1} }.to ${2}
 snippet ee
 	expect(${1:page}).to ${2:have_css} '${3:h1}', text: '${4:Todos}'
 snippet have_c
@@ -227,12 +275,20 @@ snippet letuser
 #     Rspec snippets     #
 ##########################
 snippet it
-	it 'should ${1:...}' do
-	  ${2}
+	it '${1:should return}${2}' do
+	  ${0}
 	end
 #################################################
 #      FactoryGirl snippets
 #################################################
+snippet trans
+	transient do
+	  ${0}
+	end
+snippet iw
+	initialize_with do
+	  ${0}
+	end
 snippet fgs
 	sequence(:${1:name}){|i| "${2:`Object_name`}#{i}"}
 #TODO In fgf Model_name() in singular not plural!!
@@ -249,9 +305,10 @@ snippet fgc
 	FactoryGirl.create(:${1})
 snippet fgb
 	FactoryGirl.build(:${1})
+snippet fgbl
+	FactoryGirl.build_list(:${1})
 snippet fgcl
 	FactoryGirl.create_list(:${1}, ${2})
-	#New spec snippets
 snippet fspec
 	require 'rails_helper'
 
@@ -274,15 +331,41 @@ snippet routespec
 	RSpec.describe `substitute(expand('%:p:t:r:s?_routing_spec?Controller?'), '\(_\|^\)\(.\)', '\u\2', 'g')`, type: :routing do
 	  ${0}
 	end
+snippet jspec
+	require 'rails_helper'
+
+	RSpec.describe ${1:`Model_name()`}, type: :job do
+	  ${2}
+	end
+snippet tspec
+	require 'rails_helper'
+
+	RSpec.describe ${1:`Model_name()`}, type: :task do
+	  ${2}
+	end
+snippet dspec
+	require 'rails_helper'
+
+	RSpec.describe ${1:`Model_name()`}, type: :decorator do
+	  ${2}
+	end
+snippet concernspec
+	require 'rails_helper'
+
+	RSpec.describe ${1:`Model_name()`}, type: :concern do
+	  ${2}
+	end
 snippet sspec
 	require 'rails_helper'
 
 	RSpec.describe ${1:`Model_name()`}, type: :service do
+	  ${2}
 	end
 snippet ospec
 	require 'rails_helper'
 
 	RSpec.describe ${1:`Model_name()`}, type: :operation do
+	  ${2}
 	end
 snippet hspec
 	require 'rails_helper'
@@ -294,17 +377,39 @@ snippet hspec
 	    end
 	  end
 	end
-snippet mspec
-	require "rails_helper"
+snippet cspec
+	require 'rails_helper'
 
-	RSpec.describe ${1:`Model_name()`}, type: :model do
-	  it 'should have a valid factory' do
-	    expect(FactoryGirl.build(:${2:`Object_name()`})).to be_valid
-	    expect{
-	      FactoryGirl.create_list(:$2, 10)
-	    }.to change{ $1.count }.by(10)
+	RSpec.describe `substitute(expand('%:p:t:r:s?s_controller_spec??'), '\(_\|^\)\(.\)', '\u\2', 'g')`sController, type: :controller do
+
+	  let(:${1:model}) { FactoryGirl.create(:$1) }
+	end
+snippet cspecold
+	require 'rails_helper'
+
+	RSpec.describe ${1:Models}Controller, type: :controller do
+
+	  let(:valid_attributes) {
+	    FactoryGirl.attributes_for(:${2:model})
+	  }
+
+	  let(:invalid_attributes) {
+	    skip("Add a hash of attributes invalid for your model")
+	  }
+
+	  let(:$2) { FactoryGirl.create(:$2) }
+
+	  describe '${3:GET} #${4:action}' do
+	    it '${5:should}' do
+	      ${0}
+	    end
 	  end
-	  ${3}
+	end
+	#
+snippet itroutes
+	it 'routes $1 $2 to $3#$4' do
+	  expect(${1:get}: '${2:path}').to route_to(controller: '${3:controller}', action: '${4:action}')
+>>>>>>> More own changes. mb:snippets/rails/specs.snippets
 	end
 snippet cspec
 	require 'rails_helper'
@@ -386,11 +491,67 @@ snippet vspecold
 	  end
 	end
 	#
+<<<<<<< HEAD:snippets/rspec/specs.snippets
 snippet	desc
 	describe '${1}' do
 	  ${2}
 	end
 snippet	con
+
+snippet itrenders
+	it 'renders the $3 template' do
+	  ${1:get} :${2:action}
+	  expect(response).to render_template('${3:template}')
+	end
+	#
+snippet ithasstatus
+	it 'responds with http status $3' do
+	  ${1:get} :${2:action}
+	  expect(response).to have_http_status(:${3:status})
+	end
+	#
+snippet itredirects
+	it 'redirects to ${1}' do
+	  ${2:get} :${3:action}
+	  expect(response).to redirect_to(${4:target})
+	end
+snippet itassigns
+	it 'assigns the $2 as @$2' do
+	  ${1:get} :${2:action}
+	  expect(assigns(:${1:value})).to eq(${0})
+	end
+
+#################################################
+# Model Testing
+#################################################
+snippet mspec
+	require 'rails_helper'
+
+	RSpec.describe ${1:`Model_name()`}, type: :model do
+	  it 'should have a valid factory' do
+	    expect(FactoryGirl.build(:${2:`Object_name()`})).to be_valid
+	    expect{
+	      FactoryGirl.create_list(:$2, 10)
+	    }.to change{ $1.count }.by(10)
+	  end
+	  ${3}
+	end
+#################################################
+# Sidekiq
+#################################################
+snippet itsq
+	it { is_expected.to be_processed_in :${1:queue_name }}
+snippet esa
+	expect(${1:JobClassName}).to have_enqueued_job(${2:job_argument})
+snippet describe
+	describe '${1}' do
+	  ${2}
+	end
+snippet con
+	context '${1}' do
+	  ${2}
+	end
+snippet	context
 	context '${1}' do
 	  ${2}
 	end
