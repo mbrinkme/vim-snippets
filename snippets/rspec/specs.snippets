@@ -1,3 +1,107 @@
+#------------------
+# rspec
+#------------------
+snippet ctex
+	require 'rails_helper'
+
+	RSpec.describe `expand('%:t:r:gs?\(_spec\)\|\(_\)\(\l\)\|\(^[a-z]\)?\u\3\u\4?')`, type: :controller do
+	  describe '${1:"GET index"}' do
+	    ${2:let!(:completed_todo) { FactoryGirl.create(done: true, note: "buy milk") }}
+
+	    it 'renders the :index template' do
+	      get :index
+	      expect(response).to render_template :index
+	    end
+
+	    it '${3:returns only the completed todos}' do
+	      ${4:get(:index)}
+	      ${5:except(assigns(:completed_todos)).to eq([completed_todo])}
+	    end
+	  end
+	end
+snippet ct
+	require 'rails_helper'
+
+	RSpec.describe `expand('%:t:r:gs?\(_spec\)\|\(_\)\(\l\)\|\(^[a-z]\)?\u\3\u\4?')`, type: :controller do
+	  describe '${1:"GET index"}' do
+	    ${2}
+	    it '${3:returns only the completed todos}' do
+	      ${4:get(:index)}
+	      ${5:except(assigns(:completed_todos)).to eq([completed_todo])}
+	    end
+	  end
+	end
+snippet mt
+	require 'rails_helper'
+
+	RSpec.describe `expand('%:t:r:gs?\(_spec\)\|\(_\)\(\l\)\|\(^[a-z]\)?\u\3\u\4?')`, type: :model do
+	  ${1}
+	end
+snippet desc
+	describe '${1}' do
+	  ${2}
+	end
+
+##########################
+#     Rspec snippets     #
+##########################
+snippet desc
+	describe ${1:`substitute(substitute(vim_snippets#Filename(), '_spec$', '', ''), '\(_\|^\)\(.\)', '\u\2', 'g')`} do
+		${0}
+	end
+snippet descm
+	describe '${1:#method}' do
+		${0:pending 'Not implemented'}
+	end
+snippet cont
+	context '${1:message}' do
+		${0}
+	end
+snippet bef
+	before :${1:each} do
+		${0}
+	end
+snippet aft
+	after :${1:each} do
+		${0}
+	end
+snippet let
+	let(:${1:object}) { ${0} }
+snippet let!
+	let!(:${1:object}) { ${0} }
+snippet subj
+	subject { ${0} }
+snippet su
+	subject(${1}) { ${0} }
+snippet s.
+	subject.${0:method}
+snippet spec
+	specify { subject.${0} }
+snippet exp
+	expect(${1:object}).to ${0}
+snippet expb
+	expect { ${1:object} }.to ${0}
+snippet experr
+	expect { ${1:object} }.to raise_error ${2:StandardError}, /${0:message_regex}/
+snippet shared
+	shared_examples ${0:'shared examples name'}
+snippet ibl
+	it_behaves_like ${0:'shared examples name'}
+snippet its
+	its(:${1:method}) { should ${0} }
+snippet is
+	it { should ${0} }
+snippet isn
+	it { should_not ${0} }
+snippet iexp
+	it { expect(${1:object}).${1} ${0} }
+snippet iexpb
+	it { expect { ${1:object} }.${1} ${0} }
+snippet iiexp
+	it { is_expected.to ${0} }
+snippet iiexpn
+	it { is_expected.not_to ${0} }
+
 snippet sufgb
 	subject { FactoryGirl.build(:${1}) }
 snippet su
