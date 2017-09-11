@@ -406,7 +406,7 @@ snippet fgf
 	  end
 	end
 snippet fgc
-	FactoryGirl.create(:${1})
+	${1:`Object_name()`} = FactoryGirl.create(:$1${2})${0}
 snippet fgb
 	FactoryGirl.build(:${1})
 snippet fgbl
