@@ -406,9 +406,16 @@ snippet fgf
 	  end
 	end
 snippet fgc
-	${1:`Object_name()`} = FactoryGirl.create(:$1${2})${0}
+	${1:`Object_name()`} = FactoryGirl.create(:$1${2})${3}
+snippet cr
+	${1:`Object_name()`} = create(:$1${2})
+	${0}
+snippet crl
+	${1:`Object_name()`} = create_list(:$1, ${2})${3}
+snippet bu
+	${1:`Object_name()`} = build(:$1${2})${3}
 snippet fgb
-	FactoryGirl.build(:${1})
+	${1:`Object_name()`} = FactoryGirl.build(:$1${2})${3}
 snippet fgbl
 	FactoryGirl.build_list(:${1})
 snippet fgcl
