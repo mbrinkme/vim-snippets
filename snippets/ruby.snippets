@@ -971,6 +971,24 @@ snippet fac
 	    ${2:model_attribute1} { ${3:Faker::Lorem.sentence } }
 	  end
 	end
+snippet fv
+	# frozen_string_literal: true
+
+	include VPRD
+
+	FactoryGirl.define do
+	  factory :${1:model} do
+	    ${2}
+	  end
+	end
+snippet fve
+	# frozen_string_literal: true
+
+	include VPRD
+
+	FactoryGirl.define do
+	${0}
+	end
 #################################################
 # heroku
 #################################################

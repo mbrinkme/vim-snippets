@@ -414,6 +414,8 @@ snippet crl
 	${1:`Object_name()`} = create_list(:$1, ${2})${3}
 snippet bu
 	${1:`Object_name()`} = build(:$1${2})${3}
+snippet bul
+	${1:`Object_name()`} = build_list(:$1${2}, 1)${3}
 snippet fgb
 	${1:`Object_name()`} = FactoryGirl.build(:$1${2})${3}
 snippet fgbl
@@ -600,7 +602,6 @@ snippet vspecold
 	  end
 	end
 	#
-<<<<<<< HEAD:snippets/rspec/specs.snippets
 snippet	desc
 	describe '${1}' do
 	  ${2}
