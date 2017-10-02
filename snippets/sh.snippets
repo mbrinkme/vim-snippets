@@ -1,7 +1,9 @@
 # Shebang. Executing bash via /usr/bin/env makes scripts more portable.
+snippet	basename
+	$(basename "${1:$1}")
 snippet #!
 	#!/usr/bin/env sh
-	
+
 snippet bash
 	#!/usr/bin/env bash
 
@@ -98,4 +100,4 @@ snippet usage
 	else
 	  echo "ERROR! You need one Parameter."
 	  echo "usage: y.sh url human_filname [Parameter for youtube-dl i.g. -o]"
-        fi
+	fi
