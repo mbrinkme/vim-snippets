@@ -638,11 +638,14 @@ snippet mspec
 	require 'rails_helper'
 
 	RSpec.describe ${1:`Model_name()`}, type: :model do
-	  it 'should have a valid factory' do
-	    expect(FactoryGirl.build(:${2:`Object_name()`})).to be_valid
-	    expect{
-	      FactoryGirl.create_list(:$2, 10)
-	    }.to change{ $1.count }.by(10)
+	  context 'valid factory' do
+	    it 'should have a valid factory' do
+	      expect(build(:${2:`Object_name()`})).to be_valid
+	    end
+
+	    it 'should create 10 active records objects' do
+	      expect { create_list(:$2, 10) }.to change { $1.count }.by(10)
+	    end
 	  end
 	  ${3}
 	end
