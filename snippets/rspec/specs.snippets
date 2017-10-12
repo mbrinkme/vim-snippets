@@ -490,6 +490,14 @@ snippet hspec
 	    end
 	  end
 	end
+snippet spec
+	# frozen_string_literal: true
+
+	require '${1:rails_helper}'
+
+	RSpec.describe `substitute(substitute(expand('%:p:t:r:s'), '\(_\|^\)\(.\)', '\u\2', 'g'), 'Spec', '\u\2', 'g')`, type: :${2} do
+	  ${3}
+	end
 snippet cspec
 	require 'rails_helper'
 
