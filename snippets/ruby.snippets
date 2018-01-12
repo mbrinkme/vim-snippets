@@ -1,6 +1,5 @@
-###########################
-#   migrations snippets   #
-###########################
+snippet rd
+	# rubocop:disable ${1:Security/Eval}
 snippet todor
 	# TODO: mb`strftime('%Y%m%d')` ${1:Refactor me: }
 snippet todo
@@ -8,6 +7,9 @@ snippet todo
 snippet fsl
 	# frozen_string_literal: true
 	${1}
+###########################
+#   migrations snippets   #
+###########################
 snippet mccd
 	change_column_default :${1:table_name_in_plural}, ${2:attribute}, ${3:default_value}
 snippet mref
