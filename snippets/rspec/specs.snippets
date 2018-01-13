@@ -474,7 +474,17 @@ snippet sspec
 	RSpec.describe ${1:`Model_name()`}, type: :service do
 	  ${2}
 	end
+snippet vospec
+	# frozen_string_literal: true
+
+	require 'app_helper'
+
+	RSpec.describe ${1:`Model_name()`}, type: :operation do
+	  ${2}
+	end
 snippet ospec
+	# frozen_string_literal: true
+
 	require 'rails_helper'
 
 	RSpec.describe ${1:`Model_name()`}, type: :operation do
@@ -530,7 +540,6 @@ snippet cspecold
 snippet itroutes
 	it 'routes $1 $2 to $3#$4' do
 	  expect(${1:get}: '${2:path}').to route_to(controller: '${3:controller}', action: '${4:action}')
->>>>>>> More own changes. mb:snippets/rails/specs.snippets
 	end
 snippet cspec
 	require 'rails_helper'
