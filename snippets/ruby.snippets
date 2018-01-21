@@ -977,9 +977,9 @@ snippet a
 snippet fklorem
 	{ ${1:Faker::Lorem.sentence } }
 snippet fac
-	FactoryGirl.define do
-	  factory :${1:model} do
-	    ${2:model_attribute1} { ${3:Faker::Lorem.sentence } }
+	Factory${1:Bot}.define do
+	  factory :${2:model} do
+	    ${3:model_attribute1} { ${4:Faker::Lorem.sentence } }
 	  end
 	end
 snippet fv
