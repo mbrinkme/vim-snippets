@@ -1,3 +1,11 @@
+snippet aclass
+	# frozen_string_literal: true
+
+	module Api::V1
+	  class ${1:`Model_name()`}sController < ApiController
+	    $0
+	  end
+	end
 snippet seq
 	sequence(:${1:productgroup }) { |i| "${2:$1}#{i}" }
 snippet oclass
