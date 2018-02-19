@@ -35,7 +35,9 @@ snippet sclass
 	  end
 	end
 snippet mclass
-	class ${1:Model} < ActiveRecord::Base
+	# frozen_string_literal: true
+
+	class ${1:`Model_name()`} < ActiveRecord::Base
 	  $0
 	end
 snippet vclass
@@ -393,12 +395,6 @@ snippet flash
 	flash[:${1:notice}] = '${0}'
 snippet habtm
 	has_and_belongs_to_many :${1:object}, join_table: '${2:table_name}', foreign_key: '${3}_id'
-snippet hm
-	has_many :${0:object}
-snippet hmd
-	has_many :${1:other}s, class_name: '${2:$1}', foreign_key: '${3:$1}_id', dependent: :destroy
-snippet hmt
-	has_many :${1:object}, through: :${0:object}
 snippet ho
 	has_one :${0:object}
 snippet hod

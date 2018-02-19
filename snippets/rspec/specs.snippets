@@ -160,36 +160,64 @@ snippet ej
 
 snippet itroutes
 	it 'routes $1 $2 to $3#$4' do
-	  expect(${1:get}: '${2:path}').to route_to(controller: '${3:controller}', action: '${4:action}')
+	  expect(${1:GET}: '${2:path}').to route_to(controller: '${3:controller}', action: '${4:action}')
 	end
 snippet itroutesnew
-	it 'routes get ${1:`Object_name_plural()`}/new to $1#new' do
+	it 'routes GET ${1:`Route()`}/new to $1#new' do
 	  expect(get: '$1/new').to route_to('$1#new')
 	end
 snippet itroutesindex
-	it 'routes get ${1:`Object_name_plural()`}/ to $1#index' do
+	it 'routes GET ${1:`Route()`}/ to $1#index' do
 	  expect(get: '$1/').to route_to(controller: '$1', action: 'index')
 	end
 snippet itroutesedit
-	it 'routes get ${1:`Object_name_plural()`}/1/edit to $1#edit' do
+	it 'routes GET ${1:`Route()`}/1/edit to $1#edit' do
 	  expect(get: '$1/1/edit').to route_to(controller: '$1', action: 'edit', id: '1')
 	end
 snippet itroutesshow
-	it 'routes get ${1:`Object_name_plural()`}/1 to $1#show' do
+	it 'routes GET ${1:`Route()`}/1 to $1#show' do
 	  expect(get: '$1/1').to route_to(controller: '$1', action: 'show', id: '1')
 	end
 snippet itroutesupdate
-	it 'routes patch ${1:`Object_name_plural()`}/1 to $1#update' do
+	it 'routes PATCH ${1:`Route()`}/1 to $1#update' do
 	  expect(patch: '$1/1').to route_to(controller: '$1', action: 'update', id: '1')
 	end
 snippet itroutescreate
-	it 'routes post ${1:`Object_name_plural()`} to $1#create' do
+	it 'routes POST ${1:`Route()`} to $1#create' do
 	  expect(post: '$1').to route_to(controller: '$1', action: 'create')
 	end
 snippet itroutesdestroy
 	it 'routes DELETE ${1:`Route()`}/1 to $1#destroy' do
 	  expect(delete: '$1/1').to route_to(controller: '$1', action: 'destroy', id: '1')
 	end
+# snippet itroutes
+	# it 'routes $1 $2 to $3#$4' do
+	  # expect(${1:get}: '${2:path}').to route_to(controller: '${3:controller}', action: '${4:action}')
+	# end
+# snippet itroutesnew
+	# it 'routes get ${1:`Object_name_plural()`}/new to $1#new' do
+	  # expect(get: '$1/new').to route_to('$1#new')
+	# end
+# snippet itroutesindex
+	# it 'routes get ${1:`Object_name_plural()`}/ to $1#index' do
+	  # expect(get: '$1/').to route_to(controller: '$1', action: 'index')
+	# end
+# snippet itroutesedit
+	# it 'routes get ${1:`Object_name_plural()`}/1/edit to $1#edit' do
+	  # expect(get: '$1/1/edit').to route_to(controller: '$1', action: 'edit', id: '1')
+	# end
+# snippet itroutesshow
+	# it 'routes get ${1:`Object_name_plural()`}/1 to $1#show' do
+	  # expect(get: '$1/1').to route_to(controller: '$1', action: 'show', id: '1')
+	# end
+# snippet itroutesupdate
+	# it 'routes patch ${1:`Object_name_plural()`}/1 to $1#update' do
+	  # expect(patch: '$1/1').to route_to(controller: '$1', action: 'update', id: '1')
+	# end
+# snippet itroutescreate
+	# it 'routes post ${1:`Object_name_plural()`} to $1#create' do
+	  # expect(post: '$1').to route_to(controller: '$1', action: 'create')
+	# end
 # snippet itroutesdestroy
 	# it 'routes delete ${1:`Object_name_plural()`}/1 to $1#destroy' do
 	  # expect(delete: '$1/1').to route_to(controller: '$1', action: 'destroy', id: '1')
